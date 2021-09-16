@@ -1,0 +1,24 @@
+{
+    "name": "walnut/lib_dborm",
+    "authors": [
+        {
+            "name": "Marian Kostadinov",
+            "email": "manchokapitancho@gmail.com"
+        }
+    ],
+	"autoload": {
+		"psr-4": {
+			"Walnut\\Lib\\DbOrm\\": "src/"
+		}
+	},
+	"require": {
+		"walnut/lib_dbquery": "^0.0.2",
+		"walnut/lib_dbquerybuilder": "dev-main",
+		"walnut/lib_dbdatamodel": "dev-main"
+	},
+	"require-dev": {
+		"walnut/lib_dbquery_pdo": "dev-master",
+		"vimeo/psalm": "^4.9.3",
+		"phpunit/phpunit": "^9.5.9"
+	}
+}
