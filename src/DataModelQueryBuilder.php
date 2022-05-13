@@ -18,8 +18,8 @@ use Walnut\Lib\DbDataModel\DataModel;
 final class DataModelQueryBuilder {
 
 	public function __construct(
-		private /*readonly*/ SqlQuoter $sqlQuoter,
-		private /*readonly*/ DataModel $model
+		private readonly SqlQuoter $sqlQuoter,
+		private readonly DataModel $model
 	) { }
 
 	/**

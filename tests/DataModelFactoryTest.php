@@ -48,6 +48,7 @@ final class DataModelFactoryTest extends TestCase {
 					}
 					public function collectAsTreeData(): TreeDataResultBag {}
 					public function collectAsHash(): ListResultBag {}
+					public function rowCount(): int {}
 				};
 			}
 			public function lastIdentity(): mixed {}

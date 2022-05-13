@@ -12,8 +12,8 @@ use Walnut\Lib\DbDataModel\DataModel;
 final class DataModelFactory implements RelationalStorageFactory {
 
 	public function __construct(
-		private /*readonly*/ SqlQuoter $sqlQuoter,
-		private /*readonly*/ QueryExecutor $queryExecutor
+		private readonly SqlQuoter $sqlQuoter,
+		private readonly QueryExecutor $queryExecutor
 	) { }
 
 	public function getFetcher(DataModel $model): RelationalStorageFetcher {
@@ -30,7 +30,6 @@ final class DataModelFactory implements RelationalStorageFactory {
 			new DataModelQueryBuilder(
 				$this->sqlQuoter,
 				$model
-
 			),
 			$model
 		);

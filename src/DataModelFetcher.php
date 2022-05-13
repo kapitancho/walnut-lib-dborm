@@ -23,9 +23,9 @@ use Walnut\Lib\DbDataModel\DataPart;
 final class DataModelFetcher implements RelationalStorageFetcher {
 
 	public function __construct(
-		private /*readonly*/ SqlQuoter $quoter,
-		private /*readonly*/ QueryExecutor $queryExecutor,
-		private /*readonly*/ DataModel $model
+		private readonly SqlQuoter $quoter,
+		private readonly QueryExecutor $queryExecutor,
+		private readonly DataModel $model
 	) { }
 
 	public function fetchData(QueryFilter $filter): array {
@@ -48,7 +48,10 @@ final class DataModelFetcher implements RelationalStorageFetcher {
 	 * @return string[]
 	 */
 	private function getValuesPlaceholders(array $filterData): array {
-		return ['VALUES' => '(' . implode(', ', $filterData ?: [0]) . ')'];
+		return ['VALUES' => "(" .
+			implode(", ", array_map(fn(string $str): string
+				=> $this->quoter->quoteValue($str), $filterData ?: [0])) .
+		")"];
 	}
 
 	private function fetchTreeData(string $modelName, array $filterData): ResultBag {
@@ -82,7 +85,7 @@ final class DataModelFetcher implements RelationalStorageFetcher {
 					$v = $q[$oneOfField->sourceField ?? $part->keyField->name] ?? null;
 					$q[$oneOfField->fieldName] = $v ?
 						$relatedValues[$oneOfField->targetName]->withKey($v) : null;
-					if ($oneOfField->sourceField) {
+					if ($oneOfField->sourceField && $part->keyField->name !== $oneOfField->sourceField) {
 						unset($q[$oneOfField->sourceField]);
 					}
 				}
