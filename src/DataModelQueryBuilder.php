@@ -1,4 +1,4 @@
-<?php /** @noinspection DuplicatedCode */
+<?php
 
 namespace Walnut\Lib\DbOrm;
 
@@ -15,39 +15,14 @@ use Walnut\Lib\DbDataModel\DataModel;
 /**
  * @package Walnut\Lib\DbOrm
  */
-final class DataModelQueryBuilder {
+final class DataModelQueryBuilder implements RelationalStorageQueryBuilder {
 
 	public function __construct(
 		private readonly SqlQuoter $sqlQuoter,
 		private readonly DataModel $model
 	) { }
 
-	/**
-	 * @var array<string, PreparedQuery>
-	 */
-	private array $insertQueryCache = [];
-	/**
-	 * @var array<string, PreparedQuery>
-	 */
-	private array $updateQueryCache = [];
-	/**
-	 * @var array<string, PreparedQuery>
-	 */
-	private array $deleteQueryCache = [];
-
 	public function getInsertQuery(string $modelName): PreparedQuery {
-		return $this->insertQueryCache[$modelName] ??= $this->buildInsertQuery($modelName);
-	}
-
-	public function getUpdateQuery(string $modelName): PreparedQuery {
-		return $this->updateQueryCache[$modelName] ??= $this->buildUpdateQuery($modelName);
-	}
-
-	public function getDeleteQuery(string $modelName): PreparedQuery {
-		return $this->deleteQueryCache[$modelName] ??= $this->buildDeleteQuery($modelName);
-	}
-
-	private function buildInsertQuery(string $modelName): PreparedQuery {
 		$model = $this->model->part($modelName);
 		$fields = [];
 		$pk = $model->keyField->name;
@@ -75,7 +50,7 @@ final class DataModelQueryBuilder {
 		return new PreparedQuery($query->build($this->sqlQuoter), $boundParams);
 	}
 
-	private function buildUpdateQuery(string $modelName): PreparedQuery {
+	public function getUpdateQuery(string $modelName): PreparedQuery {
 		$model = $this->model->part($modelName);
 		$fields = [];
 		$boundParams = [$kf = $model->keyField->name];
@@ -106,22 +81,22 @@ final class DataModelQueryBuilder {
 		}
 		$query = new UpdateQuery(
 			$model->table->tableName, $fields,
-			new QueryFilter(new FieldExpression(
-				$model->keyField->name, '=',
+			new QueryFilter(FieldExpression::equals(
+				$model->keyField->name,
 				new PreparedValue($kf))
 			)
 		);
 		return new PreparedQuery($query->build($this->sqlQuoter), $boundParams);
 	}
 
-	private function buildDeleteQuery(string $modelName): PreparedQuery {
+	public function getDeleteQuery(string $modelName): PreparedQuery {
 		$model = $this->model->part($modelName);
 		$boundParams = [];
 		$boundParams[] = $model->keyField->name;
 		$query = new DeleteQuery(
 			$model->table->tableName,
-			new QueryFilter(new FieldExpression(
-				$model->keyField->name, '=',
+			new QueryFilter(FieldExpression::equals(
+				$model->keyField->name,
 				new PreparedValue($model->keyField->name))
 			)
 		);

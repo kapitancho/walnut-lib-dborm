@@ -16,6 +16,7 @@ use Walnut\Lib\DbOrm\DataModelFactory;
 use Walnut\Lib\DbQuery\Pdo\PdoConnector;
 use Walnut\Lib\DbQuery\Pdo\PdoQueryExecutor;
 use Walnut\Lib\DbQueryBuilder\Expression\FieldExpression;
+use Walnut\Lib\DbQueryBuilder\Expression\FieldExpressionOperation;
 use Walnut\Lib\DbQueryBuilder\QueryPart\QueryFilter;
 use Walnut\Lib\DbQueryBuilder\QueryValue\SqlValue;
 use Walnut\Lib\DbQueryBuilder\Quoter\SqliteQuoter;
@@ -96,7 +97,7 @@ final class IntegrationTest extends TestCase {
 		$model = (new DataModelBuilder)->build(MockUserQueryModel::class);
 		$dataModelFetcher = $this->getFactory()->getFetcher($model);
 		$data = $dataModelFetcher->fetchData(new QueryFilter(
-			new FieldExpression('id', '<', new SqlValue(2))
+			new FieldExpression('id', FieldExpressionOperation::lessThan, new SqlValue(2))
 		));
 		$row = $data[0];
 		$this->assertEquals('1', $row['id']);
@@ -112,7 +113,7 @@ final class IntegrationTest extends TestCase {
 		$factory = $this->getFactory();
 		$dataModelFetcher = $factory->getFetcher($model);
 		$data = $dataModelFetcher->fetchData(new QueryFilter(
-			new FieldExpression('id', '=', new SqlValue(1))
+			FieldExpression::equals('id', new SqlValue(1))
 		))[0];
 		$oldData = $data;
 		$data['name'] .= '*';
@@ -122,7 +123,7 @@ final class IntegrationTest extends TestCase {
 		$dataModelSynchronizer->synchronizeData([$oldData], [$data]);
 
 		$data = $dataModelFetcher->fetchData(new QueryFilter(
-			new FieldExpression('id', '=', new SqlValue(1))
+			FieldExpression::equals('id', new SqlValue(1))
 		))[0];
 		$this->assertEquals('User 1*', $data['name']);
 

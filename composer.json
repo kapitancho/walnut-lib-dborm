@@ -12,8 +12,8 @@
 		}
 	},
 	"require": {
-		"walnut/lib_dbquery": "^0.0.3",
-		"walnut/lib_dbquerybuilder": "^0.0.2",
+		"walnut/lib_dbquery": "^0.0.4",
+		"walnut/lib_dbquerybuilder": "^0.0.3",
 		"walnut/lib_dbdatamodel": "^0.0.2"
 	},
 	"require-dev": {

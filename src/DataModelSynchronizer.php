@@ -1,4 +1,4 @@
-<?php /** @noinspection DuplicatedCode */
+<?php
 
 namespace Walnut\Lib\DbOrm;
 
@@ -12,7 +12,7 @@ final class DataModelSynchronizer implements RelationalStorageSynchronizer {
 
 	public function __construct(
 		private readonly QueryExecutor $queryExecutor,
-		private readonly DataModelQueryBuilder $queryBuilder,
+		private readonly RelationalStorageQueryBuilder $queryBuilder,
 		private readonly DataModel $model
 	) { }
 

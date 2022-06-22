@@ -8,7 +8,7 @@ use Walnut\Lib\DbQuery\ResultBag\ResultBag;
 use Walnut\Lib\DbQueryBuilder\Expression\FieldExpression;
 use Walnut\Lib\DbQueryBuilder\Expression\RawExpression;
 use Walnut\Lib\DbQueryBuilder\Query\SelectQuery;
-use Walnut\Lib\DbQueryBuilder\QueryPart\OrderByAscending;
+use Walnut\Lib\DbQueryBuilder\QueryPart\OrderByField;
 use Walnut\Lib\DbQueryBuilder\QueryPart\QueryFilter;
 use Walnut\Lib\DbQueryBuilder\QueryPart\TableField;
 use Walnut\Lib\DbQueryBuilder\QueryPart\TableJoin;
@@ -139,9 +139,8 @@ final class DataModelFetcher implements RelationalStorageFetcher {
 			$crossTable = $part->crossTable->tableName;
 			$joins[] = new TableJoin(
 				"__", $crossTable, new QueryFilter(
-					new FieldExpression(
+					FieldExpression::equals(
 						new TableField("__", $part->crossTable->sourceField),
-						'=',
 						new TableField("_", $part->crossTable->targetField)
 					)
 				)
@@ -181,7 +180,7 @@ final class DataModelFetcher implements RelationalStorageFetcher {
 		}
 		$orderBy = [];
 		if ($part->sortField) {
-			$orderBy = [new OrderByAscending($part->sortField->name)];
+			$orderBy = [OrderByField::ascending($part->sortField->name)];
 		}
 
 		$query = new SelectQuery(

@@ -1,4 +1,4 @@
-<?php /** @noinspection DuplicatedCode */
+<?php
 
 namespace Walnut\Lib\DbOrm;
 
@@ -27,9 +27,11 @@ final class DataModelFactory implements RelationalStorageFactory {
 	public function getSynchronizer(DataModel $model): RelationalStorageSynchronizer {
 		return new DataModelSynchronizer(
 			$this->queryExecutor,
-			new DataModelQueryBuilder(
-				$this->sqlQuoter,
-				$model
+			new DataModelCachedQueryBuilder(
+				new DataModelQueryBuilder(
+					$this->sqlQuoter,
+					$model
+				)
 			),
 			$model
 		);
