@@ -18,6 +18,10 @@ use Walnut\Lib\DbDataModel\DataModel;
 use Walnut\Lib\DbDataModel\DataPart;
 
 /**
+ * @psalm-suppress MixedAssignment
+ * @psalm-suppress MixedArgument
+ * @psalm-suppress MixedArrayAccess
+ * @psalm-suppress MixedArrayAssignment
  * @package Walnut\Lib\DbOrm
  */
 final class DataModelFetcher implements RelationalStorageFetcher {

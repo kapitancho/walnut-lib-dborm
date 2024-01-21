@@ -6,6 +6,14 @@ use Walnut\Lib\DbQuery\QueryExecutor;
 use Walnut\Lib\DbDataModel\DataModel;
 
 /**
+ * @psalm-suppress MixedAssignment
+ * @psalm-suppress MixedArgument
+ * @psalm-suppress MixedArrayAccess
+ * @psalm-suppress MixedArrayOffset
+ * @psalm-suppress MixedArrayAssignment
+ * @psalm-suppress MixedArgumentTypeCoercion
+ * @psalm-suppress PossiblyNullArrayOffset
+ * @psalm-suppress PossiblyNullArrayAccess
  * @package Walnut\Lib\DbOrm
  */
 final class DataModelSynchronizer implements RelationalStorageSynchronizer {
@@ -121,7 +129,7 @@ final class DataModelSynchronizer implements RelationalStorageSynchronizer {
 		}
 		foreach($model->listOfFields as $listOfField) {
 			$p = $this->model->part($listOfField->targetName);
-			$targetField = $p->parentField->name;
+			$targetField = $p->parentField->name ?? null;
 			$sortField = $p->sortField->name ?? null;
 			$oldRelatedEntities = $oldEntity[$listOfField->fieldName] ?? [];
 			$newRelatedEntities = $newEntity[$listOfField->fieldName] ?? [];
