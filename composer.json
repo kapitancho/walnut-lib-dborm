@@ -14,7 +14,7 @@
 	"require": {
 		"walnut/lib_dbquery": "^0.0.5",
 		"walnut/lib_dbquerybuilder": "^0.0.3",
-		"walnut/lib_dbdatamodel": "^0.0.2"
+		"walnut/lib_dbdatamodel": "^0.0.3"
 	},
 	"require-dev": {
 		"walnut/lib_dbquery_pdo": "dev-master",
